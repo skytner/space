@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.space.server.SpaceApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.880 s -- in com.space.server.SpaceApplicationTests
