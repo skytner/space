@@ -19,7 +19,6 @@ export const nextJsConfig = [
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",
@@ -32,6 +31,22 @@ export const nextJsConfig = [
       globals: {
         ...globals.serviceworker,
       },
+    },
+  },
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: process.cwd(),
+      },
+    },
+    rules: {
+      "@typescript-eslint/await-thenable": "error",
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-misused-promises": "error",
+      "@typescript-eslint/strict-boolean-expressions": "error",
+      "@typescript-eslint/no-unnecessary-type-assertion": "error",
     },
   },
   {
@@ -50,8 +65,12 @@ export const nextJsConfig = [
     settings: { react: { version: "detect" } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
+      "@next/next/no-img-element": 'error',
+      "@next/next/no-html-link-for-pages": 'error',
+      "@next/next/no-sync-scripts": "warn",
+      "@next/next/no-async-client-component": 'error',
+      "@next/next/google-font-display": "error",
     },
   },
 ];
