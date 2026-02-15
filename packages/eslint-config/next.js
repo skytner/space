@@ -6,7 +6,7 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReact from "eslint-plugin-react";
 import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
-import { config as baseConfig } from "./base.js";
+import { configStrict as baseConfig } from "./base.js";
 
 /**
  * A custom ESLint configuration for libraries that use Next.js.
@@ -66,11 +66,19 @@ export const nextJsConfig = [
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
       "react/react-in-jsx-scope": "off",
-      "@next/next/no-img-element": 'error',
-      "@next/next/no-html-link-for-pages": 'error',
+      "@next/next/no-img-element": "error",
+      "@next/next/no-html-link-for-pages": "error",
       "@next/next/no-sync-scripts": "warn",
-      "@next/next/no-async-client-component": 'error',
+      "@next/next/no-async-client-component": "error",
       "@next/next/google-font-display": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "args": "all",
+          "varsIgnorePattern": "^_",
+          "argsIgnorePattern": "^_",
+        },
+      ],
     },
   },
 ];

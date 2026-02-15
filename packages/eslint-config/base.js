@@ -66,3 +66,8 @@ export const config = [
     ignores: ["dist/**"],
   },
 ];
+
+/** Base config без onlyWarn — для приложений (например Next), где нужны именно errors. */
+export const configStrict = config.filter(
+  (block) => !(block.plugins && block.plugins.onlyWarn),
+);
