@@ -1,3 +1,4 @@
+'use client'
 import { useState } from "react";
 import { MapMode } from "../types/mode";
 import styles from '../styles/ToggleMapMode.module.css'

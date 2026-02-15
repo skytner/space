@@ -1,15 +1,10 @@
-import Image, { type ImageProps } from "next/image";
+import { Home } from "@/modules";
 import styles from "./page.module.css";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-   
-      </main>
-      <footer className={styles.footer}>
-   
-      </footer>
+      <Home.HomeView />
     </div>
   );
 }
