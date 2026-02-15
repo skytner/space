@@ -1,5 +1,6 @@
 "use client";
-    
+
+import { Shared } from "@/modules";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type Props = {
@@ -7,19 +8,11 @@ type Props = {
     style?: React.CSSProperties;
 };
 
-function mulberry32(seed: number) {
-    return function () {
-        let t = (seed += 0x6d2b79f5);
-        t = Math.imul(t ^ (t >>> 15), t | 1);
-        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-}
 
 type Star = { x: number; y: number; r: number; layer: 0 | 1 | 2 };
 
 function generateStars(tileW: number, tileH: number): Star[] {
-    const rng = mulberry32(42);
+    const rng = Shared.mulberry32(42);
     const starCount = Math.floor((tileW * tileH) / 1200);
     const stars: Star[] = [];
 
@@ -128,6 +121,10 @@ function drawSpaceMap(
     ctx.restore();
 }
 
+const VELOCITY_HISTORY_MS = 80;
+const INERTIA_FRICTION = 0.92;
+const INERTIA_MIN_SPEED = 0.15;
+
 export function CanvasMap({ className, style }: Props) {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -136,6 +133,9 @@ export function CanvasMap({ className, style }: Props) {
     const [isDragging, setIsDragging] = useState(false);
     const isDraggingRef = useRef(false);
     const dragStartRef = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
+    const velocityHistoryRef = useRef<{ t: number; x: number; y: number }[]>([]);
+    const inertiaRafRef = useRef<number | null>(null);
+    const touchIdRef = useRef<number | null>(null);
 
     const draw = useCallback(() => {
         const container = containerRef.current;
@@ -208,11 +208,77 @@ export function CanvasMap({ className, style }: Props) {
         };
     }, []);
 
+    const getPointFromTouch = useCallback((clientX: number, clientY: number) => {
+        const container = containerRef.current;
+        if (!container) return { x: 0, y: 0 };
+        const rect = container.getBoundingClientRect();
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }, []);
+
+    const updatePanFromPoint = useCallback(
+        (pt: { x: number; y: number }) => {
+            const start = dragStartRef.current;
+            panRef.current = {
+                x: start.panX + (start.x - pt.x),
+                y: start.panY + (start.y - pt.y),
+            };
+        },
+        []
+    );
+
+    const pushVelocitySample = useCallback(() => {
+        const now = Date.now();
+        const hist = velocityHistoryRef.current;
+        hist.push({ t: now, x: panRef.current.x, y: panRef.current.y });
+        while (hist.length > 1 && now - hist[0]!.t > VELOCITY_HISTORY_MS) hist.shift();
+    }, []);
+
+    const getVelocityAndStartInertia = useCallback(() => {
+        const hist = velocityHistoryRef.current;
+        velocityHistoryRef.current = [];
+        if (hist.length < 2) return;
+        const first = hist[0]!;
+        const last = hist[hist.length - 1]!;
+        const dt = (last.t - first.t) / 1000;
+        if (dt <= 0) return;
+        const vx = (last.x - first.x) / dt;
+        const vy = (last.y - first.y) / dt;
+        const speed = Math.hypot(vx, vy);
+        if (speed < INERTIA_MIN_SPEED) return;
+
+        const runInertia = () => {
+            let vx = (last.x - first.x) / dt;
+            let vy = (last.y - first.y) / dt;
+            let lastT = performance.now() / 1000;
+
+            const tick = () => {
+                const now = performance.now() / 1000;
+                const frameDt = now - lastT;
+                lastT = now;
+                panRef.current.x += vx * frameDt;
+                panRef.current.y += vy * frameDt;
+                vx *= INERTIA_FRICTION;
+                vy *= INERTIA_FRICTION;
+                requestDraw();
+                if (Math.abs(vx) > INERTIA_MIN_SPEED || Math.abs(vy) > INERTIA_MIN_SPEED) {
+                    inertiaRafRef.current = requestAnimationFrame(tick);
+                }
+            };
+            inertiaRafRef.current = requestAnimationFrame(tick);
+        };
+        runInertia();
+    }, [requestDraw]);
+
     const onPointerDown = useCallback(
         (e: React.MouseEvent) => {
             if (e.button !== 0) return;
+            if (inertiaRafRef.current != null) {
+                cancelAnimationFrame(inertiaRafRef.current);
+                inertiaRafRef.current = null;
+            }
             isDraggingRef.current = true;
             setIsDragging(true);
+            velocityHistoryRef.current = [];
             const pt = getPoint(e);
             dragStartRef.current = {
                 x: pt.x,
@@ -224,32 +290,86 @@ export function CanvasMap({ className, style }: Props) {
         [getPoint]
     );
 
+    const onTouchStart = useCallback(
+        (e: React.TouchEvent) => {
+            if (e.touches.length !== 1) return;
+            if (inertiaRafRef.current != null) {
+                cancelAnimationFrame(inertiaRafRef.current);
+                inertiaRafRef.current = null;
+            }
+            const touch = e.touches[0]!;
+            touchIdRef.current = touch.identifier;
+            isDraggingRef.current = true;
+            setIsDragging(true);
+            velocityHistoryRef.current = [];
+            const pt = getPointFromTouch(touch.clientX, touch.clientY);
+            dragStartRef.current = {
+                x: pt.x,
+                y: pt.y,
+                panX: panRef.current.x,
+                panY: panRef.current.y,
+            };
+        },
+        [getPointFromTouch]
+    );
+
     useEffect(() => {
         if (typeof window === "undefined") return;
 
         const onMove = (e: MouseEvent) => {
             if (!isDraggingRef.current) return;
             const pt = getPoint(e);
-            const start = dragStartRef.current;
-            panRef.current = {
-                x: start.panX + (start.x - pt.x),
-                y: start.panY + (start.y - pt.y),
-            };
+            updatePanFromPoint(pt);
+            pushVelocitySample();
             requestDraw();
         };
 
         const onUp = () => {
+            if (!isDraggingRef.current) return;
             isDraggingRef.current = false;
             setIsDragging(false);
+            getVelocityAndStartInertia();
+        };
+
+        const onTouchMove = (e: TouchEvent) => {
+            if (!isDraggingRef.current || touchIdRef.current == null) return;
+            const touch = Array.from(e.touches).find((t) => t.identifier === touchIdRef.current);
+            if (!touch) return;
+            e.preventDefault();
+            const pt = getPointFromTouch(touch.clientX, touch.clientY);
+            updatePanFromPoint(pt);
+            pushVelocitySample();
+            requestDraw();
+        };
+
+        const onTouchEnd = (e: TouchEvent) => {
+            if (e.touches.length === 0) {
+                if (isDraggingRef.current) {
+                    isDraggingRef.current = false;
+                    setIsDragging(false);
+                    getVelocityAndStartInertia();
+                }
+                touchIdRef.current = null;
+            } else if (touchIdRef.current != null) {
+                const stillDown = Array.from(e.touches).some((t) => t.identifier === touchIdRef.current);
+                if (!stillDown) touchIdRef.current = null;
+            }
         };
 
         window.addEventListener("mousemove", onMove);
         window.addEventListener("mouseup", onUp);
+        window.addEventListener("touchmove", onTouchMove, { passive: false });
+        window.addEventListener("touchend", onTouchEnd, { passive: true });
+        window.addEventListener("touchcancel", onTouchEnd, { passive: true });
         return () => {
             window.removeEventListener("mousemove", onMove);
             window.removeEventListener("mouseup", onUp);
+            window.removeEventListener("touchmove", onTouchMove);
+            window.removeEventListener("touchend", onTouchEnd);
+            window.removeEventListener("touchcancel", onTouchEnd);
+            if (inertiaRafRef.current != null) cancelAnimationFrame(inertiaRafRef.current);
         };
-    }, [getPoint, requestDraw]);
+    }, [getPoint, getPointFromTouch, updatePanFromPoint, pushVelocitySample, getVelocityAndStartInertia, requestDraw]);
 
     return (
         <div
@@ -258,6 +378,7 @@ export function CanvasMap({ className, style }: Props) {
             role="application"
             aria-label="Карта"
             onMouseDown={onPointerDown}
+            onTouchStart={onTouchStart}
             style={{
                 position: "absolute",
                 inset: 0,

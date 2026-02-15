@@ -1,20 +1,12 @@
 "use client";
 
+import { Shared } from "@/modules";
 import { useCallback, useEffect, useRef } from "react";
-
-function mulberry32(seed: number) {
-  return function () {
-    let t = (seed += 0x6d2b79f5);
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 type Star = { x: number; y: number; r: number; baseOpacity: number; phase: number; speed: number };
 
 function generateStars(width: number, height: number): Star[] {
-  const rng = mulberry32(13);
+  const rng = Shared.mulberry32(13);
   const count = Math.min(400, Math.floor((width * height) / 800));
   const stars: Star[] = [];
   for (let i = 0; i < count; i++) {

@@ -14,7 +14,7 @@ export function HomeLinkCard({ title, link, linkName, description, strIcon }: Ho
             <p className={styles.cardDescription}>
                 {description}
             </p>
-            <Link href="/map" className={styles.cardAction}>
+            <Link href={link} className={styles.cardAction}>
                 {linkName}
             </Link>
         </article>

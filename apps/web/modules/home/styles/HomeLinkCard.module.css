@@ -3,18 +3,12 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 20px;
+      border-radius:10px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
       gap: 12px;
       transition: background 0.2s ease, border-color 0.2s ease;
-  }
-
-  .cardGrid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 20px;
   }
 
 
@@ -76,12 +70,4 @@
   .cardAction:hover {
       color: #2dd4bf;
       opacity: 1;
-  }
-
-  @media (max-width: 600px) {
-
-
-      .cardGrid {
-          grid-template-columns: 1fr;
-      }
   }

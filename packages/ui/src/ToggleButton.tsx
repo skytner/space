@@ -1,7 +1,19 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+
+function usePrefersDark() {
+    const [dark, setDark] = useState(false);
+    useLayoutEffect(() => {
+        const m = window.matchMedia("(prefers-color-scheme: dark)");
+        setDark(m.matches);
+        const fn = () => setDark(m.matches);
+        m.addEventListener("change", fn);
+        return () => m.removeEventListener("change", fn);
+    }, []);
+    return dark;
+}
 
 export type Option = { value: string; label: ReactNode; disabled?: boolean };
 
@@ -17,11 +29,12 @@ export default function ToggleButton<T extends string = string>({
     value,
     onValueChange,
     options,
-    "aria-label": ariaLabel = "Toggle",
+    "aria-label": ariaLabel = "menuitemradio",
     className,
 }: Props<T>) {
     const selectedRef = useRef<HTMLButtonElement>(null);
     const indicatorRef = useRef<HTMLDivElement>(null);
+    const isDark = usePrefersDark();
 
     useLayoutEffect(() => {
         const btn = selectedRef.current;
@@ -34,7 +47,7 @@ export default function ToggleButton<T extends string = string>({
 
     return (
         <div
-            role="group"
+            role="tabpanel"
             aria-label={ariaLabel}
             className={className}
             style={{
@@ -57,9 +70,12 @@ export default function ToggleButton<T extends string = string>({
                     width: 0,
                     borderRadius: 6,
                     background: "var(--toggle-selected-bg, #fff)",
-                    boxShadow: "0 1px 2px rgba(0,0,0,.06)",
+                    boxShadow: isDark
+                        ? "0 1px 3px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.08)"
+                        : "0 1px 2px rgba(0,0,0,.08)",
+                    border: isDark ? "1px solid rgba(255,255,255,.12)" : "1px solid transparent",
                     pointerEvents: "none",
-                    transition: "left 0.2s ease, width 0.2s ease",
+                    transition: "left 0.2s ease, width 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
                 }}
             />
             {options.map((opt) => {

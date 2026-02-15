@@ -18,14 +18,14 @@
       background: var(--toolbar-bg, rgba(26, 26, 26, 0.95));
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
       --toggle-bg: rgba(255, 255, 255, 0.08);
-      --toggle-selected-bg: #2a2a2a;
+      --toggle-selected-bg: #404040;
       --toggle-color: #ededed;
       --toggle-disabled-color: #666;
     }
   }
   
   .toolbarLabel {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--foreground);
     opacity: 0.85;
