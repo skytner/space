@@ -13,7 +13,7 @@ export type Props<T extends string = string> = {
     className?: string;
 };
 
-export function ToggleButton<T extends string = string>({
+export default function ToggleButton<T extends string = string>({
     value,
     onValueChange,
     options,
