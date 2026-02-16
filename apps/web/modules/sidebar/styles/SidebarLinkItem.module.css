@@ -1,0 +1,55 @@
+.link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: var(--sidebar-fg, var(--foreground));
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.link:hover {
+    background: var(--sidebar-hover-bg, rgba(0, 0, 0, 0.06));
+}
+
+.link[data-active="true"] {
+    background: var(--sidebar-active-bg, #1e40af);
+    color: #fff;
+}
+
+.link[data-active="true"]:hover {
+    background: var(--sidebar-active-hover-bg, #1d4ed8);
+    color: #fff;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    font-size: 1.125rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.label {
+    flex: 1;
+    min-width: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .link:hover {
+    background: var(--sidebar-hover-bg, rgba(255, 255, 255, 0.08));
+  }
+}
+
+[data-theme="light"] .link:hover {
+  background: var(--sidebar-hover-bg, rgba(0, 0, 0, 0.06));
+}
+
+[data-theme="dark"] .link:hover {
+  background: var(--sidebar-hover-bg, rgba(255, 255, 255, 0.08));
+}

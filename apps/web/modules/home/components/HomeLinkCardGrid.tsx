@@ -1,5 +1,5 @@
 import styles from '../styles/HomeLinkCardGrid.module.css'
-import { HomeLinkCardProps } from '../types/card'
+import type { HomeLinkCardProps } from "../types/card";
 import { HomeLinkCard } from './HomeLinkCard'
 
 export function HomeLinkCardGrid({ cards }: { cards: HomeLinkCardProps[] }) {

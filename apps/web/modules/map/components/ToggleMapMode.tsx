@@ -1,5 +1,5 @@
 'use client'
-import { MapMode } from "../types/mode";
+import type { MapMode } from "../types/mode";
 import styles from '../styles/ToggleMapMode.module.css'
 import ToggleButton from "@repo/ui/ToggleButton";
 import { useMapMode } from "../hooks/useMapMode";

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import styles from '../styles/HomeLinkCard.module.css'
-import { HomeLinkCardProps } from '../types/card'
+import type { HomeLinkCardProps } from "../types/card";
 
 export function HomeLinkCard({ title, link, linkName, description, strIcon }: HomeLinkCardProps) {
     return (
