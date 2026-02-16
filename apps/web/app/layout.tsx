@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Map, RocketIcon } from "lucide-react";
+import { QueryProvider } from "@/modules/query";
 import { SidebarWidget } from "@/modules/sidebar";
 import { ThemeProvider } from "@/modules/theme";
 import styles from "./layout.module.css";
@@ -35,19 +36,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
-        <ThemeProvider>
-          <div className={styles.shell}>
-            <SidebarWidget
-              links={sidebarLinks}
-              logoText={
-                <span className={styles.logo}>
-                  Space <RocketIcon size={18} aria-hidden />
-                </span>
-              }
-            />
-            <main className={styles.main}>{children}</main>
-          </div>
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider>
+            <div className={styles.shell}>
+              <SidebarWidget
+                links={sidebarLinks}
+                logoText={
+                  <span className={styles.logo}>
+                    Space <RocketIcon size={18} aria-hidden />
+                  </span>
+                }
+              />
+              <main className={styles.main}>{children}</main>
+            </div>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
