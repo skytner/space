@@ -1,20 +1,57 @@
 "use client";
 
 import { Shared } from "@/modules";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    type CSSProperties,
+    type MouseEvent as ReactMouseEvent,
+    type TouchEvent as ReactTouchEvent,
+} from "react";
 
 type Props = {
     className?: string;
-    style?: React.CSSProperties;
+    style?: CSSProperties;
 };
 
+const SPECTRAL_COLORS = [
+    "#9bb0ff",
+    "#aabfff",
+    "#cad7ff",
+    "#f8f7ff",
+    "#fff4ea",
+    "#ffd2a1",
+    "#ffcc6f",
+] as const;
 
-type Star = { x: number; y: number; r: number; layer: 0 | 1 | 2 };
+type Star = {
+    x: number;
+    y: number;
+    r: number;
+    layer: 0 | 1 | 2;
+    spectralIndex: number;
+    phase: number;
+    speed: number;
+};
 
-function generateStars(tileW: number, tileH: number): Star[] {
-    const rng = Shared.mulberry32(42);
+function generateStarsForTile(tileW: number, tileH: number, tileI: number, tileJ: number): Star[] {
+    const seed = Shared.xmur3(`${tileI},${tileJ}`)();
+    const rng = Shared.splitmix32(seed);
     const starCount = Math.floor((tileW * tileH) / 1200);
     const stars: Star[] = [];
+
+    const pickSpectral = (): number => {
+        const u = rng();
+        if (u < 0.35) return 6;
+        if (u < 0.55) return 5;
+        if (u < 0.72) return 4;
+        if (u < 0.85) return 3;
+        if (u < 0.93) return 2;
+        if (u < 0.98) return 1;
+        return 0;
+    };
 
     for (let i = 0; i < starCount; i++) {
         stars.push({
@@ -22,6 +59,9 @@ function generateStars(tileW: number, tileH: number): Star[] {
             y: rng() * tileH,
             r: 0.4 + rng() * 0.6,
             layer: 0,
+            spectralIndex: pickSpectral(),
+            phase: rng() * Math.PI * 2,
+            speed: 0.5 + rng() * 1.2,
         });
     }
     for (let i = 0; i < starCount * 0.25; i++) {
@@ -30,6 +70,9 @@ function generateStars(tileW: number, tileH: number): Star[] {
             y: rng() * tileH,
             r: 0.8 + rng() * 0.8,
             layer: 1,
+            spectralIndex: pickSpectral(),
+            phase: rng() * Math.PI * 2,
+            speed: 0.5 + rng() * 1.2,
         });
     }
     for (let i = 0; i < starCount * 0.05; i++) {
@@ -38,10 +81,15 @@ function generateStars(tileW: number, tileH: number): Star[] {
             y: rng() * tileH,
             r: 1 + rng() * 1.2,
             layer: 2,
+            spectralIndex: pickSpectral(),
+            phase: rng() * Math.PI * 2,
+            speed: 0.5 + rng() * 1.2,
         });
     }
     return stars;
 }
+
+const SHOW_GRID = false;
 
 function drawSpaceMap(
     ctx: CanvasRenderingContext2D,
@@ -50,9 +98,11 @@ function drawSpaceMap(
     pixelRatio: number,
     panX: number,
     panY: number,
-    stars: Star[],
+    getStarsForTile: (tileI: number, tileJ: number) => Star[],
     tileW: number,
-    tileH: number
+    tileH: number,
+    showGrid: boolean,
+    timeSec: number
 ) {
     ctx.save();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -65,9 +115,9 @@ function drawSpaceMap(
     const maxR = Math.max(width, height) * 0.8;
 
     const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR);
-    bg.addColorStop(0, "#0a0b0f");
-    bg.addColorStop(0.6, "#0d0e14");
-    bg.addColorStop(1, "#12141c");
+    bg.addColorStop(0, "#060606");
+    bg.addColorStop(0.6, "#0a0a0a");
+    bg.addColorStop(1, "#0e0e0e");
     ctx.fillStyle = bg;
     ctx.fillRect(panX, panY, width, height);
 
@@ -76,46 +126,49 @@ function drawSpaceMap(
     const jMin = Math.floor(panY / tileH) - 1;
     const jMax = Math.ceil((panY + height) / tileH) + 1;
 
-    const layerStyles = [
-        "rgba(255, 255, 255, 0.4)",
-        "rgba(255, 255, 255, 0.7)",
-        "rgba(255, 255, 255, 0.95)",
-    ] as const;
-
     for (let layer = 0; layer <= 2; layer++) {
-        ctx.fillStyle = layerStyles[layer as 0 | 1 | 2];
-        for (const star of stars) {
-            if (star.layer !== layer) continue;
-            for (let i = iMin; i <= iMax; i++) {
-                for (let j = jMin; j <= jMax; j++) {
-                    const x = star.x + i * tileW;
-                    const y = star.y + j * tileH;
+        for (let ti = iMin; ti <= iMax; ti++) {
+            for (let tj = jMin; tj <= jMax; tj++) {
+                const stars = getStarsForTile(ti, tj);
+                for (const star of stars) {
+                    if (star.layer !== layer) continue;
+                    const twinkle = 0.5 + 0.5 * Math.sin(timeSec * star.speed + star.phase);
+                    const alpha = 0.35 + 0.65 * twinkle;
+                    const x = star.x + ti * tileW;
+                    const y = star.y + tj * tileH;
+                    const hex = SPECTRAL_COLORS[star.spectralIndex] ?? SPECTRAL_COLORS[2];
+                    ctx.save();
+                    ctx.globalAlpha = alpha;
+                    ctx.fillStyle = hex;
                     ctx.beginPath();
                     ctx.arc(x, y, star.r, 0, Math.PI * 2);
                     ctx.fill();
+                    ctx.restore();
                 }
             }
         }
     }
 
-    const gridStep = 48;
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
-    ctx.lineWidth = 1;
-    const xStart = Math.floor(panX / gridStep) * gridStep;
-    const xEnd = panX + width + gridStep;
-    const yStart = Math.floor(panY / gridStep) * gridStep;
-    const yEnd = panY + height + gridStep;
-    for (let x = xStart; x <= xEnd; x += gridStep) {
-        ctx.beginPath();
-        ctx.moveTo(x, yStart);
-        ctx.lineTo(x, yEnd);
-        ctx.stroke();
-    }
-    for (let y = yStart; y <= yEnd; y += gridStep) {
-        ctx.beginPath();
-        ctx.moveTo(xStart, y);
-        ctx.lineTo(xEnd, y);
-        ctx.stroke();
+    if (showGrid) {
+        const gridStep = 48;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+        ctx.lineWidth = 1;
+        const xStart = Math.floor(panX / gridStep) * gridStep;
+        const xEnd = panX + width + gridStep;
+        const yStart = Math.floor(panY / gridStep) * gridStep;
+        const yEnd = panY + height + gridStep;
+        for (let x = xStart; x <= xEnd; x += gridStep) {
+            ctx.beginPath();
+            ctx.moveTo(x, yStart);
+            ctx.lineTo(x, yEnd);
+            ctx.stroke();
+        }
+        for (let y = yStart; y <= yEnd; y += gridStep) {
+            ctx.beginPath();
+            ctx.moveTo(xStart, y);
+            ctx.lineTo(xEnd, y);
+            ctx.stroke();
+        }
     }
 
     ctx.restore();
@@ -129,7 +182,7 @@ export function CanvasMap({ className, style }: Props) {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const panRef = useRef({ x: 0, y: 0 });
-    const starCacheRef = useRef<{ tileW: number; tileH: number; stars: Star[] } | null>(null);
+    const tileCacheRef = useRef<{ tileW: number; tileH: number; tiles: Map<string, Star[]> } | null>(null);
     const [isDragging, setIsDragging] = useState(false);
     const isDraggingRef = useRef(false);
     const dragStartRef = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
@@ -147,11 +200,18 @@ export function CanvasMap({ className, style }: Props) {
         const height = rect.height;
         if (width <= 0 || height <= 0) return;
 
-        let cache = starCacheRef.current;
+        let cache = tileCacheRef.current;
         if (!cache || cache.tileW !== width || cache.tileH !== height) {
-            cache = { tileW: width, tileH: height, stars: generateStars(width, height) };
-            starCacheRef.current = cache;
+            cache = { tileW: width, tileH: height, tiles: new Map() };
+            tileCacheRef.current = cache;
         }
+        const getStarsForTile = (tileI: number, tileJ: number): Star[] => {
+            const key = `${tileI},${tileJ}`;
+            if (!cache!.tiles.has(key)) {
+                cache!.tiles.set(key, generateStarsForTile(cache!.tileW, cache!.tileH, tileI, tileJ));
+            }
+            return cache!.tiles.get(key)!;
+        };
 
         const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
         canvas.width = Math.round(width * dpr);
@@ -163,7 +223,8 @@ export function CanvasMap({ className, style }: Props) {
         if (!ctx) return;
 
         const { x: panX, y: panY } = panRef.current;
-        drawSpaceMap(ctx, width, height, dpr, panX, panY, cache.stars, cache.tileW, cache.tileH);
+        const timeSec = typeof performance !== "undefined" ? performance.now() * 0.001 : 0;
+        drawSpaceMap(ctx, width, height, dpr, panX, panY, getStarsForTile, cache.tileW, cache.tileH, SHOW_GRID, timeSec);
     }, []);
 
     const requestDraw = useCallback(() => {
@@ -176,17 +237,25 @@ export function CanvasMap({ className, style }: Props) {
         const height = rect.height;
         if (width <= 0 || height <= 0) return;
 
-        let cache = starCacheRef.current;
+        let cache = tileCacheRef.current;
         if (!cache || cache.tileW !== width || cache.tileH !== height) {
             draw();
             return;
         }
+        const getStarsForTile = (tileI: number, tileJ: number): Star[] => {
+            const key = `${tileI},${tileJ}`;
+            if (!cache!.tiles.has(key)) {
+                cache!.tiles.set(key, generateStarsForTile(cache!.tileW, cache!.tileH, tileI, tileJ));
+            }
+            return cache!.tiles.get(key)!;
+        };
 
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
         const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
         const { x: panX, y: panY } = panRef.current;
-        drawSpaceMap(ctx, width, height, dpr, panX, panY, cache.stars, cache.tileW, cache.tileH);
+        const timeSec = typeof performance !== "undefined" ? performance.now() * 0.001 : 0;
+        drawSpaceMap(ctx, width, height, dpr, panX, panY, getStarsForTile, cache.tileW, cache.tileH, SHOW_GRID, timeSec);
     }, [draw]);
 
     useEffect(() => {
@@ -198,7 +267,17 @@ export function CanvasMap({ className, style }: Props) {
         return () => ro.disconnect();
     }, [draw]);
 
-    const getPoint = useCallback((e: React.MouseEvent | MouseEvent) => {
+    useEffect(() => {
+        let rafId: number;
+        const tick = () => {
+            requestDraw();
+            rafId = requestAnimationFrame(tick);
+        };
+        rafId = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(rafId);
+    }, [requestDraw]);
+
+    const getPoint = useCallback((e: ReactMouseEvent | globalThis.MouseEvent) => {
         const container = containerRef.current;
         if (!container) return { x: 0, y: 0 };
         const rect = container.getBoundingClientRect();
@@ -270,7 +349,7 @@ export function CanvasMap({ className, style }: Props) {
     }, [requestDraw]);
 
     const onPointerDown = useCallback(
-        (e: React.MouseEvent) => {
+        (e: ReactMouseEvent) => {
             if (e.button !== 0) return;
             if (inertiaRafRef.current != null) {
                 cancelAnimationFrame(inertiaRafRef.current);
@@ -291,7 +370,7 @@ export function CanvasMap({ className, style }: Props) {
     );
 
     const onTouchStart = useCallback(
-        (e: React.TouchEvent) => {
+        (e: ReactTouchEvent) => {
             if (e.touches.length !== 1) return;
             if (inertiaRafRef.current != null) {
                 cancelAnimationFrame(inertiaRafRef.current);
@@ -316,7 +395,7 @@ export function CanvasMap({ className, style }: Props) {
     useEffect(() => {
         if (typeof window === "undefined") return;
 
-        const onMove = (e: MouseEvent) => {
+        const onMove = (e: globalThis.MouseEvent) => {
             if (!isDraggingRef.current) return;
             const pt = getPoint(e);
             updatePanFromPoint(pt);
@@ -331,7 +410,7 @@ export function CanvasMap({ className, style }: Props) {
             getVelocityAndStartInertia();
         };
 
-        const onTouchMove = (e: TouchEvent) => {
+        const onTouchMove = (e: globalThis.TouchEvent) => {
             if (!isDraggingRef.current || touchIdRef.current == null) return;
             const touch = Array.from(e.touches).find((t) => t.identifier === touchIdRef.current);
             if (!touch) return;
@@ -342,7 +421,7 @@ export function CanvasMap({ className, style }: Props) {
             requestDraw();
         };
 
-        const onTouchEnd = (e: TouchEvent) => {
+        const onTouchEnd = (e: globalThis.TouchEvent) => {
             if (e.touches.length === 0) {
                 if (isDraggingRef.current) {
                     isDraggingRef.current = false;

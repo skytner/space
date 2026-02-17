@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, type ReactNode } from "react";
 import type { ThemeOption } from "../types/theme";
 import { ThemeContext } from "../context/ThemeContext";
 import { getTheme } from "../functions/getTheme";
@@ -16,7 +16,7 @@ function setRootAttribute(theme: ThemeOption) {
   }
 }
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<ThemeOption>("device");
 
   useEffect(() => {

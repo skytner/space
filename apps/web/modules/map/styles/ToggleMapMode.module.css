@@ -18,7 +18,7 @@
       background: var(--toolbar-bg, rgba(26, 26, 26, 0.95));
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
       --toggle-bg: rgba(255, 255, 255, 0.08);
-      --toggle-selected-bg: #404040;
+      --toggle-selected-bg: #222b3a;
       --toggle-color: #ededed;
       --toggle-disabled-color: #666;
     }
