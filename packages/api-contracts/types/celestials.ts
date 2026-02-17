@@ -1,7 +1,7 @@
 import { Enitity } from "./entity"
 import { ObjectPosition } from "./object"
 
-export enum CelectialType {
+export enum CelestialType {
     Star = "star",
     Planet = "planet",
     Galaxy = "galaxy",
@@ -11,9 +11,9 @@ export enum CelectialType {
     BlackHole = "blackHole"
 }
 
-export interface Celectial extends Enitity {
+export interface Celestial extends Enitity {
     name: string
     description: string;
     position: ObjectPosition
-    type: CelectialType
+    type: CelestialType
 }
