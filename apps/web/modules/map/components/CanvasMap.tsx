@@ -1,11 +1,19 @@
 "use client";
 
 import { Shared } from "@/modules";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    type CSSProperties,
+    type MouseEvent as ReactMouseEvent,
+    type TouchEvent as ReactTouchEvent,
+} from "react";
 
 type Props = {
     className?: string;
-    style?: React.CSSProperties;
+    style?: CSSProperties;
 };
 
 const SPECTRAL_COLORS = [
@@ -81,7 +89,7 @@ function generateStarsForTile(tileW: number, tileH: number, tileI: number, tileJ
     return stars;
 }
 
-const SHOW_GRID = true;
+const SHOW_GRID = false;
 
 function drawSpaceMap(
     ctx: CanvasRenderingContext2D,
@@ -269,7 +277,7 @@ export function CanvasMap({ className, style }: Props) {
         return () => cancelAnimationFrame(rafId);
     }, [requestDraw]);
 
-    const getPoint = useCallback((e: React.MouseEvent | MouseEvent) => {
+    const getPoint = useCallback((e: ReactMouseEvent | globalThis.MouseEvent) => {
         const container = containerRef.current;
         if (!container) return { x: 0, y: 0 };
         const rect = container.getBoundingClientRect();
@@ -341,7 +349,7 @@ export function CanvasMap({ className, style }: Props) {
     }, [requestDraw]);
 
     const onPointerDown = useCallback(
-        (e: React.MouseEvent) => {
+        (e: ReactMouseEvent) => {
             if (e.button !== 0) return;
             if (inertiaRafRef.current != null) {
                 cancelAnimationFrame(inertiaRafRef.current);
@@ -362,7 +370,7 @@ export function CanvasMap({ className, style }: Props) {
     );
 
     const onTouchStart = useCallback(
-        (e: React.TouchEvent) => {
+        (e: ReactTouchEvent) => {
             if (e.touches.length !== 1) return;
             if (inertiaRafRef.current != null) {
                 cancelAnimationFrame(inertiaRafRef.current);
@@ -387,7 +395,7 @@ export function CanvasMap({ className, style }: Props) {
     useEffect(() => {
         if (typeof window === "undefined") return;
 
-        const onMove = (e: MouseEvent) => {
+        const onMove = (e: globalThis.MouseEvent) => {
             if (!isDraggingRef.current) return;
             const pt = getPoint(e);
             updatePanFromPoint(pt);
@@ -402,7 +410,7 @@ export function CanvasMap({ className, style }: Props) {
             getVelocityAndStartInertia();
         };
 
-        const onTouchMove = (e: TouchEvent) => {
+        const onTouchMove = (e: globalThis.TouchEvent) => {
             if (!isDraggingRef.current || touchIdRef.current == null) return;
             const touch = Array.from(e.touches).find((t) => t.identifier === touchIdRef.current);
             if (!touch) return;
@@ -413,7 +421,7 @@ export function CanvasMap({ className, style }: Props) {
             requestDraw();
         };
 
-        const onTouchEnd = (e: TouchEvent) => {
+        const onTouchEnd = (e: globalThis.TouchEvent) => {
             if (e.touches.length === 0) {
                 if (isDraggingRef.current) {
                     isDraggingRef.current = false;

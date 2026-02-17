@@ -86,7 +86,7 @@
 
 [data-theme="dark"] .sidebar .themeToggle {
     --toggle-bg: rgba(255, 255, 255, 0.08);
-    --toggle-selected-bg: #404040;
+    --toggle-selected-bg: #222b3a;
     --toggle-color: #ededed;
     --toggle-disabled-color: #666;
 }

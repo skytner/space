@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Map, RocketIcon } from "lucide-react";
-import { QueryProvider } from "@/modules/query";
+import { QueryProvider } from "./query.provider";
 import { SidebarWidget } from "@/modules/sidebar";
 import { ThemeProvider } from "@/modules/theme";
 import styles from "./layout.module.css";
@@ -31,7 +32,7 @@ const sidebarLinks = [
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en">

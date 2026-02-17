@@ -1,4 +1,4 @@
-import { Enitity } from "./entity"
+import { Entity } from "./entity"
 import { ObjectPosition } from "./object"
 
 export enum CelestialType {
@@ -11,7 +11,7 @@ export enum CelestialType {
     BlackHole = "blackHole"
 }
 
-export interface Celestial extends Enitity {
+export interface Celestial extends Entity {
     name: string
     description: string;
     position: ObjectPosition
