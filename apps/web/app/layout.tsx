@@ -37,14 +37,7 @@ export default function RootLayout({
       <body className={`${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
         <ThemeProvider>
           <div className={styles.shell}>
-            <SidebarWidget
-              links={sidebarLinks}
-              logoText={
-                <span className={styles.logo}>
-                  Space <RocketIcon size={18} aria-hidden />
-                </span>
-              }
-            />
+
             <main className={styles.main}>{children}</main>
           </div>
         </ThemeProvider>

@@ -9,7 +9,6 @@ export function ToggleMapMode() {
 
     return (
         <div className={styles.toolbar}>
-            <span className={styles.toolbarLabel}>Mode</span>
             <ToggleButton<MapMode>
                 aria-label="Режим карты"
                 value={mapMode}
