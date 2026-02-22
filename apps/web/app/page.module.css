@@ -1,15 +1,8 @@
 .page {
   position: relative;
-  min-height: 100svh;
-  padding: 48px 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  overflow-x: hidden;
-}
-
-@media (max-width: 600px) {
-  .page {
-    padding: 32px 16px;
-  }
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
 }

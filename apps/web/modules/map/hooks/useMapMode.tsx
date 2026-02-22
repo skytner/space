@@ -1,6 +1,8 @@
-'use client'
-import { createContext, useContext, useState, ReactNode } from "react";
-import { MapMode } from "../types/mode";
+"use client";
+
+import { createContext, useContext } from "react";
+import type { ReactNode } from "react";
+import type { MapMode } from "../types/mode";
 
 type MapModeContextType = {
     mapMode: MapMode;
@@ -9,10 +11,15 @@ type MapModeContextType = {
 
 const MapModeContext = createContext<MapModeContextType | undefined>(undefined);
 
-export function MapModeProvider({ children }: { children: ReactNode }) {
-    const [mapMode, setMapMode] = useState<MapMode>('2d');
+type MapModeProviderProps = {
+    mode: MapMode;
+    setMode: (mode: MapMode) => void;
+    children: ReactNode;
+};
+
+export function MapModeProvider({ mode, setMode, children }: MapModeProviderProps) {
     return (
-        <MapModeContext.Provider value={{ mapMode, setMapMode }}>
+        <MapModeContext.Provider value={{ mapMode: mode, setMapMode: setMode }}>
             {children}
         </MapModeContext.Provider>
     );

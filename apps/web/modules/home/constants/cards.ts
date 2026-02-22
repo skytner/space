@@ -1,4 +1,4 @@
-import { HomeLinkCardProps } from "../types/card";
+import type { HomeLinkCardProps } from "../types/card";
 
 export const HomeLinkCards: HomeLinkCardProps[] = [
     {

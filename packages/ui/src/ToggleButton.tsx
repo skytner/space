@@ -53,6 +53,7 @@ export default function ToggleButton<T extends string = string>({
             style={{
                 display: "inline-flex",
                 position: "relative",
+                border: isDark ? "1px solid rgba(255,255,255,.12)" : "1px solid transparent",
                 borderRadius: 8,
                 padding: 2,
                 background: "var(--toggle-bg, rgba(0,0,0,.06))",
@@ -69,7 +70,9 @@ export default function ToggleButton<T extends string = string>({
                     height: "calc(100% - 4px)",
                     width: 0,
                     borderRadius: 6,
-                    background: "var(--toggle-selected-bg, #fff)",
+                    background: isDark
+                        ? "rgba(60, 62, 68, 0.92)"
+                        : "rgba(180, 182, 188, 0.85)",
                     boxShadow: isDark
                         ? "0 1px 3px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.08)"
                         : "0 1px 2px rgba(0,0,0,.08)",
