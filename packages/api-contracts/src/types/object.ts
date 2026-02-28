@@ -1,4 +1,4 @@
 export type ObjectPosition = {
-  lat: string;
-  lon: string;
+	lat: string;
+	lon: string;
 };

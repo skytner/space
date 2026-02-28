@@ -1,1 +1,1 @@
-export * as LandingModule from './landing';
+export * as LandingModule from "./landing";

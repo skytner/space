@@ -1,34 +1,35 @@
 {
-  "name": "web",
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types",
-    "prepare": "husky",
-    "clean": "turbo run clean && rm -rf node_modules && rm -rf dist"
-  },
-  "devDependencies": {
-    "eslint": "^10.0.2",
-    "eslint-config-prettier": "^10.1.8",
-    "husky": "^9.1.7",
-    "prettier": "^3.8.1",
-    "turbo": "^2.8.7",
-    "typescript": "5.9.2"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "packageManager": "bun@1.2.10",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "dependencies": {
-    "@commitlint/cli": "^20.4.2",
-    "@commitlint/config-conventional": "^20.4.2",
-    "lint-staged": "^16.2.7"
-  }
+	"name": "web",
+	"private": true,
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"lint": "turbo run lint",
+		"format": "bunx --bun @biomejs/biome format --write",
+		"check-types": "turbo run check-types",
+		"prepare": "husky",
+		"clean": "turbo run clean && rm -rf node_modules && rm -rf dist"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.4",
+		"eslint": "^10.0.2",
+		"eslint-config-prettier": "^10.1.8",
+		"husky": "^9.1.7",
+		"prettier": "^3.8.1",
+		"turbo": "^2.8.7",
+		"typescript": "5.9.2"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"packageManager": "bun@1.2.10",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"dependencies": {
+		"@commitlint/cli": "^20.4.2",
+		"@commitlint/config-conventional": "^20.4.2",
+		"lint-staged": "^16.2.7"
+	}
 }
