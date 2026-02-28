@@ -1,5 +1,4 @@
-import type { ErrorHandlerRecord } from "./errors";
-import type { NormalizedError } from "./errors";
+import type { ErrorHandlerRecord, NormalizedError } from './errors';
 
 export type HttpClientConfig = {
   baseURL: string;
