@@ -1,1 +1,0 @@
-export type MapMode = '2d' | '3d'

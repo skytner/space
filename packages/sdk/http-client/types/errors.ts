@@ -42,19 +42,19 @@ export type ErrorHandlerRecord = {
 };
 
 export type NormalizedError = {
-    message: string;
-    status?: number;
-    body?: unknown;
-    isAbort: boolean;
-  };
+  message: string;
+  status?: number;
+  body?: unknown;
+  isAbort: boolean;
+};
 
 export class HttpError extends Error {
   constructor(
     public readonly status: number,
     public readonly body: unknown,
-    message?: string
+    message?: string,
   ) {
     super(message ?? `HTTP ${status}`);
-    this.name = "HttpError";
+    this.name = 'HttpError';
   }
 }
