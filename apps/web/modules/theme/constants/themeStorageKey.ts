@@ -1,1 +1,0 @@
-export const THEME_STORAGE_KEY = 'THEME_KEY'

@@ -1,33 +1,24 @@
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
-import { Map, RocketIcon } from "lucide-react";
-import { QueryProvider } from "./query.provider";
-import { SidebarWidget } from "@/modules/sidebar";
-import { ThemeProvider } from "@/modules/theme";
-import styles from "./layout.module.css";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google';
+import type { ReactNode } from 'react';
+import './globals.css';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-sans",
-  subsets: ["latin", "latin-ext"],
-  display: "swap",
+  display: 'swap',
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-sans',
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin", "cyrillic"],
-  display: "swap",
+  display: 'swap',
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-mono',
 });
 
 export const metadata: Metadata = {
-  title: "Space",
-  description: "Discover space",
+  description: 'Discover space',
+  title: 'Space',
 };
-
-const sidebarLinks = [
-  { href: "/", label: "Home", icon: <Map size={20} aria-hidden />, section: "Navigation" },
-];
 
 export default function RootLayout({
   children,
@@ -37,12 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
-        <ThemeProvider>
-          <div className={styles.shell}>
-
-            <main className={styles.main}>{children}</main>
-          </div>
-        </ThemeProvider>
+        <>{children}</>
       </body>
     </html>
   );
