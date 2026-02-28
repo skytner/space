@@ -1,6 +1,6 @@
 {
-  "name": "@packages/sdk",
-  "version": "0.0.1",
+  "name": "@packages/solid-ui",
+  "version": "0.0.0",
   "private": true,
   "exports": {
     "./*": "./src/*.tsx"

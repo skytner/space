@@ -1,5 +1,5 @@
 {
-  "name": "@repo/eslint-config",
+  "name": "@packages/eslint-config",
   "version": "0.0.0",
   "type": "module",
   "private": true,
@@ -10,7 +10,7 @@
     "./nest": "./nest.js"
   },
   "devDependencies": {
-"@darraghor/eslint-plugin-nestjs-typed": "^5.0.0",
+    "@darraghor/eslint-plugin-nestjs-typed": "^5.0.0",
     "@eslint/js": "^9.39.1",
     "@ianvs/prettier-plugin-sort-imports": "4.7.1",
     "@next/eslint-plugin-next": "^15.5.0",

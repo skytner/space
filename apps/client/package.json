@@ -11,20 +11,19 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@repo/ui": "*",
-    "@repo/api-contracts": "*",
-    "@tanstack/react-query": "^5.90.21",
+    "@packages/api-contracts": "*",
+    "@packages/react-ui": "*",
     "lucide-react": "^0.564.0",
     "next": "16.1.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
+    "@packages/eslint-config": "*",
+    "@packages/typescript-config": "*",
     "@types/node": "^22.15.3",
-    "@types/react": "19.2.2",
-    "@types/react-dom": "19.2.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.1",
     "typescript": "5.9.2"
   }
