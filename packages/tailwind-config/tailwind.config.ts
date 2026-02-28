@@ -1,5 +1,9 @@
-import typography  from '@tailwindcss/typography'
+import typography from '@tailwindcss/typography';
 
-export const sharedConfig = {
+/** @type {import('tailwindcss').Config} */
+export default {
+  theme: {
+    extend: {},
+  },
   plugins: [typography],
-}
+};

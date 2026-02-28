@@ -36,8 +36,22 @@ const Paragraph = React.forwardRef<HTMLParagraphElement, TypographyProps>(
 )
 Paragraph.displayName = "Typography.Paragraph"
 
+const Muted = React.forwardRef<HTMLParagraphElement, TypographyProps>(
+  ({ className, ...props }, ref) => (
+    <p
+      ref={ref}
+      className={cn("text-muted-foreground text-sm", className)}
+      {...props}
+    />
+  )
+)
+Muted.displayName = "Typography.Muted"
+
+
+
 export const Typography = {
   H1,
   H2,
   Paragraph,
+  Muted,
 }
