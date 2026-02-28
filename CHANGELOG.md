@@ -2,7 +2,6 @@
 
 ## [0.0.2] - 2026-02-28
 ### Added
-- ✨ **Landing Page**: Initial implementation of the "Spacecraft" landing in `apps/web` (Next.js 15).
 - 🛠 **Husky Integration**: Added git hooks to automate code quality checks.
 - 📝 **Commitlint**: Enforced "Conventional Commits" standard (feat, fix, chore).
 - 🎨 **Shared Styling**: Centralized Tailwind CSS configuration for the entire monorepo.
