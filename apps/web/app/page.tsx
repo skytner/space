@@ -1,5 +1,5 @@
-import { Map } from "@/modules";
-import styles from "./page.module.css";
+import { Map } from '@/modules';
+import styles from './page.module.css';
 
 export default function HomePage() {
   return (
