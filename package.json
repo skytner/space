@@ -1,13 +1,12 @@
 {
 	"name": "web",
-	"private": true,
 	"scripts": {
-		"build": "turbo run build",
 		"dev": "turbo run dev",
-		"lint": "turbo run lint",
-		"format": "bunx --bun @biomejs/biome format --write",
+		"build": "turbo run build",
+		"format": "bunx --bun @biomejs/biome format --write .",
+		"lint": "bunx --bun @biomejs/biome check --write .",
+		"check": "bunx --bun @biomejs/biome check --write --no-errors-on-unmatched --files-ignore-unknown=true .",
 		"check-types": "turbo run check-types",
-		"prepare": "husky",
 		"clean": "turbo run clean && rm -rf node_modules && rm -rf dist"
 	},
 	"devDependencies": {

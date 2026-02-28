@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Typography } from "@packages/react-ui";
+import { motion } from "framer-motion";
 
 interface HeroProps {
 	title: string;
