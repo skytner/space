@@ -1,0 +1,64 @@
+@import "tailwindcss";
+@import "@packages/react-ui/globals.css";
+
+:root {
+	--background: #ffffff;
+	--foreground: #010309;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #010309;
+		--foreground: #ededed;
+	}
+}
+
+[data-theme="light"] {
+	--background: #ffffff;
+	--foreground: #010309;
+}
+
+[data-theme="dark"] {
+	--background: #010309;
+	--foreground: #ededed;
+	color-scheme: dark;
+}
+
+html,
+body {
+	max-width: 100vw;
+	overflow-x: hidden;
+	padding: 0;
+}
+
+body {
+	font-family: var(--font-sans), system-ui, sans-serif;
+	color: var(--foreground);
+	background: var(--background);
+}
+
+* {
+	/*box-sizing: border-box;*/
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.imgDark {
+	display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+	html {
+		color-scheme: dark;
+	}
+
+	.imgLight {
+		display: none;
+	}
+	.imgDark {
+		display: unset;
+	}
+}

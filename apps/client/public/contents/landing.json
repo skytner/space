@@ -1,0 +1,27 @@
+{
+	"title": "Spacecraft",
+	"description": "A modern, feature‑rich space mod with deep progression, technology, and entirely new planets to discover.",
+	"features": [
+		{
+			"id": "progression",
+			"title": "Grand Journey",
+			"description": "Experience a deep evolution system that rewards long-term exploration and mastery of the cosmos.",
+			"image": "https://i.imgur.com/3jBcIQy.png?w=800",
+			"fullDescription": "Embark on a sweeping odyssey through the stars. Progression in Spacecraft is both profound and rewarding, built upon a multi-layered evolution system. As you travel from humble beginnings to cosmic mastery, you’ll unlock new technologies, adapt to challenging environments, overcome resource scarcity, and establish a legacy among the stars. Every action has lasting consequences on your spacefaring saga, encouraging creativity, resilience, and strategic planning for the long haul. Explore, upgrade, and redefine what's possible in your journey across the galaxy."
+		},
+		{
+			"id": "tech",
+			"title": "Orbital Engineering",
+			"description": "Construct advanced spacecraft and automated systems using high-tech frontier mechanics.",
+			"image": "https://preview.redd.it/my-galacticraft-space-project-v0-722x70o9z4fd1.jpg?width=640&crop=smart&auto=webp&s=9d4f9674f3a261db8f1ba74dfaaddd3e342a99de",
+			"fullDescription": "Harness the bleeding edge of spacefaring technology. Master intricate engineering challenges as you design, build, and optimize starships, orbital stations, and automated industries. From modular reactors to propulsion arrays, every component can be fine-tuned or expanded as your ambitions grow. Seamlessly integrate automation and robotics to maintain your outposts and fleets. Whether you love micro-managing or grand-scale construction, Orbital Engineering rewards creative designs, robust systems, and pushing frontier mechanics to their limit."
+		},
+		{
+			"id": "planets",
+			"title": "Celestial Realms",
+			"description": "Touch down on uncharted worlds, each with unique biomes, gravity, and ancient secrets.",
+			"image": "https://media.forgecdn.net/attachments/629/553/2023-03-04_22.png?w=800&q=80",
+			"fullDescription": "Chart your own map of the cosmos! Each planet awaits with distinct landscapes, lifeforms, and secrets beneath the surface. Adapt to diverse biomes ranging from frostbitten tundras to lush, alien forests, and scavenge exotic resources. Encounter mysterious anomalies, dangerous natural events, and remnants of forgotten civilizations. Your discoveries shape your personal story and unlock new technologies, rare materials, and narrative quests that tie into the larger spacefaring tapestry."
+		}
+	]
+}
