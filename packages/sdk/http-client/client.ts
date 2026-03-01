@@ -72,7 +72,7 @@ export class HttpClient {
 				this.inFlight.delete(key);
 			}
 			controller = new AbortController();
-			timeoutId = setTimeout(() => controller!.abort(), this.timeout);
+			timeoutId = setTimeout(() => controller?.abort(), this.timeout);
 			signal = controller.signal;
 			this.inFlight.set(key, { controller, timeoutId });
 		}

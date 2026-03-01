@@ -3,23 +3,23 @@
 
 :root {
 	--background: #ffffff;
-	--foreground: #171717;
+	--foreground: #010309;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--background: #0a0a0a;
+		--background: #010309;
 		--foreground: #ededed;
 	}
 }
 
 [data-theme="light"] {
 	--background: #ffffff;
-	--foreground: #171717;
+	--foreground: #010309;
 }
 
 [data-theme="dark"] {
-	--background: #0a0a0a;
+	--background: #010309;
 	--foreground: #ededed;
 	color-scheme: dark;
 }
@@ -28,6 +28,7 @@ html,
 body {
 	max-width: 100vw;
 	overflow-x: hidden;
+	padding: 0;
 }
 
 body {
@@ -37,9 +38,7 @@ body {
 }
 
 * {
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
+	/*box-sizing: border-box;*/
 }
 
 a {

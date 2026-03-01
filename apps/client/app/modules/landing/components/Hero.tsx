@@ -1,8 +1,9 @@
 "use client";
 
 import { Typography } from "@packages/react-ui";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { createStarfield } from "@packages/sdk";
+import { motion } from "motion/react";
+import { useMemo, useRef } from "react";
 
 interface HeroProps {
 	description: string;
@@ -11,33 +12,49 @@ interface HeroProps {
 
 export default function Hero({ title, description }: HeroProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
-	const { scrollY } = useScroll();
 
-	const yGlow = useTransform(scrollY, [0, 800], [0, 60]);
-	const opacityGlow = useTransform(scrollY, [0, 600], [1, 0]);
+	const stars = useMemo(
+		() =>
+			createStarfield({
+				width: 1,
+				height: 1,
+				count: 100,
+				normalized: true,
+				minSize: 1,
+				maxSize: 2.5,
+				minOpacity: 0.15,
+				maxOpacity: 0.7,
+			}),
+		[],
+	);
 
 	return (
 		<section
 			ref={containerRef}
-			className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#010309]"
+			className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden"
 		>
-			<div className="absolute inset-0 z-[2] opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+			<div className="absolute inset-0 z-0 overflow-hidden bg-[#010309]" aria-hidden>
+				<div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+				<div className="absolute inset-0 pointer-events-none overflow-hidden">
+					{stars.map((star) => (
+						<div
+							key={star.x + star.y + star.size + star.opacity}
+							className="absolute rounded-full bg-white"
+							style={{
+								left: `${star.x * 100}%`,
+								top: `${star.y * 100}%`,
+								width: star.size,
+								height: star.size,
+								opacity: star.opacity,
+								transform: "translate(-50%, -50%)",
+							}}
+						/>
+					))}
+				</div>
+				<div className="absolute bottom-0 left-0 w-full h-[35vh] bg-linear-to-t from-[#010309] via-[#010309]/50 to-transparent" />
+			</div>
 
-			<motion.div
-				style={{ y: yGlow, opacity: opacityGlow }}
-				className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
-			>
-				<div className="h-[650px] w-[650px] bg-orange-600/10 blur-[120px] rounded-full animate-[pulse_15s_infinite_ease-in-out]" />
-
-				<div className="absolute inset-0 m-auto h-[350px] w-[350px] bg-yellow-500/15 blur-[80px] rounded-full" />
-
-				<div className="absolute inset-0 m-auto h-[180px] w-[180px] bg-yellow-200/30 blur-[50px] rounded-full opacity-80" />
-
-				<div className="absolute inset-0 m-auto h-24 w-24 bg-white blur-[30px] rounded-full" />
-				<div className="absolute inset-0 m-auto h-12 w-12 bg-white blur-[10px] rounded-full shadow-[0_0_60px_20px_rgba(255,255,255,0.4)]" />
-			</motion.div>
-
-			<div className="relative z-10 flex flex-col items-center justify-center px-6 max-w-5xl w-full text-center">
+			<div className="relative z-20 flex flex-col items-center justify-center px-6 max-w-5xl w-full text-center min-h-screen">
 				<motion.div
 					initial={{ opacity: 0, y: 20, filter: "blur(15px)" }}
 					animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -58,8 +75,6 @@ export default function Hero({ title, description }: HeroProps) {
 					</Typography.Paragraph>
 				</motion.div>
 			</div>
-
-			<div className="absolute bottom-0 left-0 w-full h-[35vh] bg-linear-to-t from-[#010309] via-[#010309]/50 to-transparent z-[5]" />
 		</section>
 	);
 }

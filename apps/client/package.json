@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@packages/api-contracts": "*",
 		"@packages/react-ui": "*",
+		"@packages/sdk": "*",
 		"lucide-react": "^0.564.0",
 		"motion": "^12.34.3",
 		"tailwindcss": "^4.1.10",
@@ -21,6 +22,7 @@
 	},
 	"devDependencies": {
 		"@packages/typescript-config": "*",
+		"msw": "^2.7.1",
 		"@tailwindcss/postcss": "^4.1.10",
 		"postcss": "^8.5.4",
 		"@types/node": "^22.15.3",
@@ -28,5 +30,10 @@
 		"@types/react-dom": "^19.2.3",
 		"@packages/tailwind-config": "*",
 		"typescript": "5.9.2"
+	},
+	"msw": {
+		"workerDirectory": [
+			"public"
+		]
 	}
 }
