@@ -1,5 +1,11 @@
 # client
 
+## 0.3.7
+
+### Patch Changes
+
+- 661fb50: fcvg
+
 ## 0.3.6
 
 ### Patch Changes
