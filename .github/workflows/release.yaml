@@ -25,7 +25,7 @@ jobs:
         uses: changesets/action@v1
         with:
           version: bun run version-packages
-          publish: bunx changeset tag && git push --follow-tags
+          publish: bun run release-tag && git push --follow-tags
           createGithubReleases: true
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
