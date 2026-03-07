@@ -1,5 +1,0 @@
----
-"client": minor
----
-
-Implemented landing
