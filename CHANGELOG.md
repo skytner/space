@@ -7,7 +7,7 @@
 - 🎨 **Shared Styling**: Centralized Tailwind CSS configuration for the entire monorepo.
 
 ### Changed
-- 🧹 **Code Hygiene**: Refactored existing codebase to pass ESLint and Prettier rules.
+- 🧹 **Code Hygiene**: Refactored existing codebase to pass - and Prettier rules.
 - 📦 **Workspace Sync**: Improved Turborepo task orchestration for faster builds.
 
 ---
