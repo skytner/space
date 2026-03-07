@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: set up bun
         uses: oven-sh/setup-bun@v2
@@ -26,19 +28,24 @@ jobs:
       - name: install deps
         run: bun install --frozen-lockfile
 
-      - name: create release PR or tag
-        id: changesets
+      - name: create release PR
+        if: "!startsWith(github.event.head_commit.message, 'chore(release):')"
         uses: changesets/action@v1
         with:
           version: bun run version-packages
-          publish: bunx changeset tag
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: tag versions
+        if: startsWith(github.event.head_commit.message, 'chore(release):')
+        run: |
+          bunx changeset tag
+          git push --follow-tags
+
       - name: create GitHub releases from CHANGELOG
-        if: steps.changesets.outputs.published == 'true'
+        if: startsWith(github.event.head_commit.message, 'chore(release):')
         uses: StafflinePeoplePlus/changeset-github-release@v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
