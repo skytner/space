@@ -1,5 +1,11 @@
 # client
 
+## 0.3.1
+
+### Patch Changes
+
+- 4aac2b3: testing workflow
+
 ## 0.3.0
 
 ### Minor Changes
