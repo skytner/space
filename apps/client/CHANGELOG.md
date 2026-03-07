@@ -1,5 +1,11 @@
 # client
 
+## 0.3.4
+
+### Patch Changes
+
+- 6f1800c: test
+
 ## 0.3.3
 
 ### Patch Changes
