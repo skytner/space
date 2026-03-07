@@ -1,5 +1,11 @@
 # client
 
+## 0.3.3
+
+### Patch Changes
+
+- 32001c1: test
+
 ## 0.3.2
 
 ### Patch Changes
