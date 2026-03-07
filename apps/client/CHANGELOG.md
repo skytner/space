@@ -1,5 +1,11 @@
 # client
 
+## 0.3.5
+
+### Patch Changes
+
+- 045714a: test
+
 ## 0.3.4
 
 ### Patch Changes
