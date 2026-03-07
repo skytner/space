@@ -1,3 +1,3 @@
 bun run build
-bun test
+cd apps/api && npx jest && cd ../..
 bun lint
