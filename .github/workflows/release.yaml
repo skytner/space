@@ -28,24 +28,13 @@ jobs:
       - name: install deps
         run: bun install --frozen-lockfile
 
-      - name: create release PR
-        if: "!startsWith(github.event.head_commit.message, 'chore(release):')"
+      - name: create release PR or GitHub releases
         uses: changesets/action@v1
         with:
           version: bun run version-packages
+          publish: bunx changeset tag
+          createGithubReleases: true
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: tag versions
-        if: startsWith(github.event.head_commit.message, 'chore(release):')
-        run: |
-          bunx changeset tag
-          git push --follow-tags
-
-      - name: create GitHub releases from CHANGELOG
-        if: startsWith(github.event.head_commit.message, 'chore(release):')
-        uses: StafflinePeoplePlus/changeset-github-release@v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
