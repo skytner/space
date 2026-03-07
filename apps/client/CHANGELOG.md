@@ -1,5 +1,11 @@
 # client
 
+## 0.3.8
+
+### Patch Changes
+
+- 4a91cf0: t
+
 ## 0.3.7
 
 ### Patch Changes
