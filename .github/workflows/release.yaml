@@ -21,11 +21,12 @@ jobs:
           bun-version: latest
       - name: install deps
         run: bun install --frozen-lockfile
-      - name: create release PR or GitHub releases
+      - name: create release PR or publish
+        id: changesets
         uses: changesets/action@v1
         with:
           version: bun run version-packages
-          publish: sh -c 'bun run release-tag && git push --follow-tags'
+          publish: echo "skip"
           createGithubReleases: true
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
