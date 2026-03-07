@@ -1,27 +1,27 @@
 {
-  "title": "Pulsar",
-  "description": "Engineer orbital systems. Explore uncharted worlds. Progress through a universe that doesn't hold your hand.",
-  "features": [
-    {
-      "id": "progression",
-      "title": "Grand Journey",
-      "description": "A layered evolution system where every decision compounds — from first launch to cosmic mastery.",
-      "image": "https://i.imgur.com/3jBcIQy.png?w=800",
-      "fullDescription": "Pulsar doesn't hand you the endgame. You earn it. Progression is built on a multi-layered evolution system — each tier unlocks new tech, new risks, and new environments that demand adaptation. Start with crude rocketry, push into orbital assembly, and eventually command interstellar fleets. Resources are scarce, environments are hostile, and every upgrade is a strategic choice. There are no filler tiers. Every step forward changes how you play."
-    },
-    {
-      "id": "tech",
-      "title": "Orbital Engineering",
-      "description": "Design spacecraft, stations, and automated systems — component by component.",
-      "image": "https://preview.redd.it/my-galacticraft-space-project-v0-722x70o9z4fd1.jpg?width=640&crop=smart&auto=webp&s=9d4f9674f3a261db8f1ba74dfaaddd3e342a99de",
-      "fullDescription": "This is not drag-and-drop crafting. Pulsar's engineering system lets you design modular spacecraft from the ground up — reactors, propulsion, life support, cargo. Every component has weight, power draw, and failure states. Build orbital stations that serve as refueling hubs. Automate mining outposts with logistics networks. Push your designs to the limit and watch them either fly — or break apart in atmosphere. Engineering here rewards precision, not recipes."
-    },
-    {
-      "id": "planets",
-      "title": "Celestial Realms",
-      "description": "Each world has its own gravity, atmosphere, biomes, and things buried beneath the surface.",
-      "image": "https://media.forgecdn.net/attachments/629/553/2023-03-04_22.png?w=800&q=80",
-      "fullDescription": "Every planet is a system, not a reskin. Gravity affects movement and engineering. Atmospheres range from breathable to corrosive. Biomes aren't cosmetic — they dictate what you can harvest, build, and survive. Beneath the surface: anomalies, remnants of dead civilizations, and resources you won't find anywhere else. Discovery isn't scripted. You land, you adapt, you figure it out — or you don't make it off-world."
-    }
-  ]
+	"title": "Pulsar",
+	"description": "Engineer orbital systems. Explore uncharted worlds. Progress through a universe that doesn't hold your hand.",
+	"features": [
+		{
+			"id": "progression",
+			"title": "Grand Journey",
+			"description": "A layered evolution system where every decision compounds — from first launch to cosmic mastery.",
+			"image": "https://i.imgur.com/3jBcIQy.png?w=800",
+			"fullDescription": "Pulsar doesn't hand you the endgame. You earn it. Progression is built on a multi-layered evolution system — each tier unlocks new tech, new risks, and new environments that demand adaptation. Start with crude rocketry, push into orbital assembly, and eventually command interstellar fleets. Resources are scarce, environments are hostile, and every upgrade is a strategic choice. There are no filler tiers. Every step forward changes how you play."
+		},
+		{
+			"id": "tech",
+			"title": "Orbital Engineering",
+			"description": "Design spacecraft, stations, and automated systems — component by component.",
+			"image": "https://preview.redd.it/my-galacticraft-space-project-v0-722x70o9z4fd1.jpg?width=640&crop=smart&auto=webp&s=9d4f9674f3a261db8f1ba74dfaaddd3e342a99de",
+			"fullDescription": "This is not drag-and-drop crafting. Pulsar's engineering system lets you design modular spacecraft from the ground up — reactors, propulsion, life support, cargo. Every component has weight, power draw, and failure states. Build orbital stations that serve as refueling hubs. Automate mining outposts with logistics networks. Push your designs to the limit and watch them either fly — or break apart in atmosphere. Engineering here rewards precision, not recipes."
+		},
+		{
+			"id": "planets",
+			"title": "Celestial Realms",
+			"description": "Each world has its own gravity, atmosphere, biomes, and things buried beneath the surface.",
+			"image": "https://media.forgecdn.net/attachments/629/553/2023-03-04_22.png?w=800&q=80",
+			"fullDescription": "Every planet is a system, not a reskin. Gravity affects movement and engineering. Atmospheres range from breathable to corrosive. Biomes aren't cosmetic — they dictate what you can harvest, build, and survive. Beneath the surface: anomalies, remnants of dead civilizations, and resources you won't find anywhere else. Discovery isn't scripted. You land, you adapt, you figure it out — or you don't make it off-world."
+		}
+	]
 }

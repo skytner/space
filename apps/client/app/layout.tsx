@@ -17,20 +17,21 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Spacecraft | Next‑Gen Space Mod",
+	title: "Pulsar — Deep Space",
 	description:
-		"Experience the ultimate frontier. Orbital engineering, celestial exploration, and deep progression in a modern Minecraft space odyssey.",
+		"A next-gen space mod built for depth. Engineer orbital systems, explore uncharted worlds, and progress through a universe designed to challenge you.",
 	keywords: [
 		"Minecraft space mod",
-		"Spacecraft mod",
-		"Orbital engineering",
-		"Minecraft planets",
-		"Next-gen Minecraft mods",
+		"Pulsar mod",
+		"Minecraft orbital engineering",
+		"Minecraft planets exploration",
+		"Minecraft tech mod",
+		"Minecraft space exploration",
 	],
 	openGraph: {
-		title: "Spacecraft | Touch the Stars",
+		title: "Pulsar — The Frontier Starts Here",
 		description:
-			"A feature-rich space exploration mod with realistic technology and uncharted worlds.",
+			"Engineer. Explore. Evolve. A space mod with real depth — from orbital mechanics to alien worlds.",
 		type: "website",
 	},
 };

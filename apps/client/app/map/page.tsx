@@ -46,11 +46,7 @@ function MapContent() {
 			)}
 			<div className="relative z-20 flex min-h-screen flex-col items-center justify-center p-8">
 				<h1 className="text-4xl font-bold text-white">Map</h1>
-				<p className="mt-4 text-white/70">
-					{fromLanding
-						? "You came from landing. Sun animates from big to small."
-						: "Map view. Open with ?fromLanding=1 to see entrance from landing."}
-				</p>
+				<p className="mt-4 text-white/70">Map on WIP.</p>
 			</div>
 		</main>
 	);
@@ -58,6 +54,7 @@ function MapContent() {
 
 export default function MapPage() {
 	return (
+		// TODO: Sun loader
 		<Suspense
 			fallback={
 				<div className="flex min-h-screen items-center justify-center bg-[#010309]">

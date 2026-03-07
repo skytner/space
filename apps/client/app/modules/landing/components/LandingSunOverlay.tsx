@@ -32,11 +32,10 @@ export function LandingSunOverlay({ onBlendChange, anchorZonePx = 350 }: Landing
 	}, [updateThreshold]);
 
 	useMotionValueEvent(scrollY, "change", (latest) => {
-		updateThreshold();
 		if (hasNavigatedToMap.current || latest < thresholdRef.current) return;
 		hasNavigatedToMap.current = true;
 		router.push(MAP_PATH);
 	});
 
-	return <SupernovaScrollSun onBlendChange={onBlendChange} />;
+	return <SupernovaScrollSun onBlendChange={onBlendChange} scrollY={scrollY} />;
 }
