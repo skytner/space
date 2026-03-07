@@ -1,5 +1,5 @@
 ---
-"client": patch
+"client": minor
 ---
 
 Implemented landing
