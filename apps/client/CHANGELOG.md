@@ -1,5 +1,11 @@
 # client
 
+## 0.3.2
+
+### Patch Changes
+
+- 2038ec5: test
+
 ## 0.3.1
 
 ### Patch Changes
